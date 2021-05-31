@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block body %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% if active_tasks %}
+        <li class="breadcrumb-item active" aria-current="page">Активные</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'tasks' %}">Активные</a></li>
+      {% endif %}
+      {% if archive_tasks %}
+        <li class="breadcrumb-item active" aria-current="page">Архив</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'tasks_archive' %}">Архив</a></li>
+      {% endif %}
+    </ol>
+  </nav>
+<form class="row g-3" id='add_task' action="{% url 'tasks' %}" method="POST">
+	{% csrf_token %}
+  <div class="col-auto">
+    <input type="text" class="form-control" id="text_task" placeholder="Текст задачи" name="text">
+  </div>
+  <div class="col-auto">
+    <select class="form-control" id="personal_task" placeholder="Исполнитель" name="personal">
+    	{% for i in personal %}
+    		<option value="{{ i.id }}">{{ i.full_name }}</option>
+    	{% endfor %}
+    </select>
+  </div>
+  <div class="col-auto">
+    <input type="date" class="form-control" id="date" placeholder="Срок" name="date">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3" form="add_task">Добавить задачу</button>
+  </div>
+</form>
+{% if active_tasks %}
+<table class="table table-bordered" style="border-radius: 10; width: 100%">
+  <thead>
+    <tr class="table-secondary">
+      <th scope="col" class="col-4">Задача</th>
+      <th scope="col" class="col-4">Исполнитель</th>
+      <th scope="col" class="col-3">Срок</th>
+      <th scope="col" class="col"><span class="badge bg-danger rounded-pill" name="delete_game" form="delete_game">X</span></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  {% for i in task_list %}
+      <tr>
+      <td>{{ i.text }}</td>
+      <td>{{ i.executor.full_name }}</td>
+      <td>{{ i.date }}</td>
+      <td><a href="{% url 'delete_task' i.id %}"><span class="badge bg-danger rounded-pill" name="delete_game" form="delete_game">X</span></a></td>
+      </div>
+    </tr>
+   {% endfor %}
+</table>
+{% endif %}
+{% if archive_tasks %}
+<table class="table table-bordered" style="border-radius: 10; width: 100%">
+  <thead>
+    <tr class="table-secondary">
+      <th scope="col" class="col-4">Задача</th>
+      <th scope="col" class="col-4">Исполнитель</th>
+      <th scope="col" class="col-2">Срок</th>
+      <th scope="col" class="col-2">Дата выполнения</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  {% for i in task_list %}
+      <tr>
+      <td>{{ i.text }}</td>
+      <td>{{ i.executor.full_name }}</td>
+      <td>{{ i.date }}</td>
+      <td>{{ i.date_done }}</td>
+      </div>
+    </tr>
+   {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

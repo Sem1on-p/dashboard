@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{%load static%}
+{%block title%}Вход{%endblock%}
+{%block head%}
+<link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+{%endblock%}
+{% block body %}
+
+<div class="container" style="margin-top: 80px">    
+<main class="form-signin">
+  <form method="POST" action="{% url 'myLogin' %}" name="vhod" id='vhod'>
+    {% csrf_token %}
+    <center>
+      <style type="text/css">
+        .textable.css1 {
+    text-align: left;
+    font-family: "Bebas Neue Bold";
+    font-size: 48px;
+    line-height: 1.4;
+    letter-spacing: 0em;
+    opacity: 1;
+}
+      </style>
+    <p class="textable css51"><span style="color: rgb(0, 191, 243);">VEE</span><span style="color: rgb(0, 0, 0);">VIDO</span></p>
+    <h1 class="h3 mb-3 fw-normal">Войдите в свой аккаунт</h1>
+    </center>
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="username">
+      <label for="floatingInput">Имя</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+      <label for="floatingPassword">Пароль</label>
+    </div>
+    <button form="vhod" class="w-100 btn btn-lg btn-dark" type="hidden" name="next" value="{{ next }}">Войти</button>
+    {# Assumes you setup the password_reset view in your URLconf #}
+  </form>
+</main>
+</div>
+
+{% endblock %}

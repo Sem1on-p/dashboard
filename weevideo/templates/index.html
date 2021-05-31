@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block body %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% if all_page_status %}
+        <li class="breadcrumb-item active" aria-current="page">Все</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Все</a></li>
+      {% endif %}
+      {% if potential_page_status %}
+        <li class="breadcrumb-item active" aria-current="page">Потенциальные</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'potential' %}">Потенциальные</a></li>
+      {% endif %}
+      {% if job_page_status %}
+        <li class="breadcrumb-item active" aria-current="page">В работе</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'job' %}">В работе</a></li>
+      {% endif %}
+      {% if end_event_page_status %}
+        <li class="breadcrumb-item active" aria-current="page">Завершенные</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'end_event' %}">Завершенные</a></li>
+      {% endif %}
+    </ol>
+  </nav>
+  {% for el in event_list %}
+  <div class="alert alert-success" role="alert">
+    <a class="" data-bs-toggle="collapse" href="#collapse{{el.id}}" role="button" aria-expanded="false" aria-controls="collapseExample" style="text-decoration: none;">
+      <div class='row'>
+        <h4 class="alert-heading col-6">
+          {{ el.event }}
+          <!--<a href="{% url 'view_event' el.id %}">{{ el.event }}</a>-->
+        </h4>
+        <ul style="display: inline;" class="col">
+          {% if el.deadline_status %}
+            <li class='badge bg-danger rounded-pill' style="display: inline;">
+              {{ el.date }}
+            </li>
+          {% else %}
+            <li class='badge bg-primary rounded-pill' style="display: inline;">
+              {{ el.date }}
+            </li>
+          {% endif %}
+          <li class='badge bg-primary rounded-pill' style="display: inline; margin-left: 10px">{{ el.get_event_status_display }}</li>
+          <li class='badge bg-primary rounded-pill' style="display: inline; margin-left: 10px">{{ el.get_event_type_display }}</li>
+        </ul>
+      </div>
+              </a>
+   <div class="collapse" id="collapse{{el.id}}">
+    <p>{{ el.description }}</p>
+    <hr>
+    <p class="mb-0">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <b>Тип</b><br>{{ el.get_event_type_display }}
+          </div>
+          <div class="col">
+            <b>Статус</b><br>{{ el.get_event_status_display }}
+          </div>
+          <div class="col">
+            <b>Контакты</b><br>{{ el.email }}
+          </div>
+          <hr>
+          <div class="col">
+            <b>Персонал</b>
+              {% for i in el.personal_list %}
+                <br>{{ i.full_name }}
+              {% endfor %}
+          </div>
+          <div class="col">
+            <b>Статус монтажера</b><br>{{ el.get_installation_status_display }}
+          </div>
+          <div class="col">
+            <b>Монтажер</b><br>
+            {%  if el.installation %}
+              {{ el.installation }}
+            {% else %}
+              -
+            {% endif %}
+          </div>
+          <hr>
+          <div class="col">
+            <b>Дедлайн</b><br>{{ el.date }}
+          </div>
+          <div class="col">
+            <b>Дата съемки</b><br>{{ el.date_filming }}
+          </div>
+          <div class="col">
+            <b>Дата завершения</b><br>{{ el.date_end }}
+          </div>
+          <hr>
+          <div class="col">
+            <b>Статус оплаты</b><br>{{ el.get_pay_status_display }}
+          </div>
+          <div class="col">
+            <b>Аренда оборудования</b><br>{{ el.rent }}
+          </div>
+          <div class="col">
+            <b>Ссылка на материалы</b><br>
+            {% if el.material_link %}<a href="{{el.material_link}}">Открыть</a>
+            {% else %}
+            -
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </p>
+  </div>
+  </div>
+  {% empty %}
+    <div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">Мероприятий нет</h4>
+    <p>{{ i.description }}</p>
+    <hr>
+    <p class="mb-0">Добавь планирующиеся мероприятия в ивент лист, через панель администратора</p>
+  </div>
+  {% endfor %}
+{% endblock %}

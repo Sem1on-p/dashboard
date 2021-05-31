@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block body %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% if all_page_status %}
+        <li class="breadcrumb-item active" aria-current="page">Все</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Все</a></li>
+      {% endif %}
+      {% if potential_page_status %}
+        <li class="breadcrumb-item active" aria-current="page">Потенциальные</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'potential' %}">Потенциальные</a></li>
+      {% endif %}
+      {% if job_page_status %}
+        <li class="breadcrumb-item active" aria-current="page">В работе</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'job' %}">В работе</a></li>
+      {% endif %}
+      {% if end_event_page_status %}
+        <li class="breadcrumb-item active" aria-current="page">Завершенные</li>
+      {% else %}
+        <li class="breadcrumb-item"><a href="{% url 'end_event' %}">Завершенные</a></li>
+      {% endif %}
+    </ol>
+  </nav>
+  <form method="POST" id='change_event' action="{% url 'dashboard' %}">
+    {% csrf_token %}
+  <div class="alert alert-success" role="alert">
+    <div class="col-12">
+    <label class="visually-hidden" for="inlineFormInputGroupUsername">Event</label>
+    <div class="input-group">
+      <div class="input-group-text">Event</div>
+      <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Event" name='event' value="{{ event.event }}"> 
+    </div>
+  </div>
+    <div class="col-12" style="padding-top: 10px">
+      <label class="visually-hidden" for="description">Описание</label>
+      <div class="input-group">
+        <div class="input-group-text">Описание</div>
+        <textarea type="text" class="form-control" id="description" placeholder="description" name="description">{{ event.description }}</textarea>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col-4" style="padding-top: 10px">
+      <label class="visually-hidden" for="type_project">Описание</label>
+      <div class="input-group">
+        <div class="input-group-text">Тип проекта</div>
+        <select type="text" class="form-control" id="type_project" placeholder="Тип проекта" name="event_type">
+          {% for i, k in event.event_type_choise %}
+            <option value="{{i}}">{{k}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="col-4" style="padding-top: 10px">
+      <label class="visually-hidden" for="status_project">Статус проекта</label>
+      <div class="input-group">
+        <div class="input-group-text">Статус проекта</div>
+        <select type="text" class="form-control" id="status_project" placeholder="Статус проекта" name="event_status">
+          {% for i, k in event.event_status_choise %}
+            <option value="{{i}}">{{k}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="col-4" style="padding-top: 10px">
+    <label class="visually-hidden" for="eMail">eMail</label>
+    <div class="input-group">
+      <div class="input-group-text">@</div>
+      <input type="text" class="form-control" id="eMail" placeholder="eMail" value="{{ event.email }}" name="email">
+    </div>
+  </div>
+  <div class="col-4" style="padding-top: 10px">
+    <label class="visually-hidden" for="personal">Персонал</label>
+    <div class="input-group">
+      <div class="input-group-text">Персонал</div>
+      <select name="personal" class="form-control" required="" id="personal" multiple="">
+        <option value="2" selected="">Настя Потапова</option>
+        <option value="3">Барак Обама</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-4" style="padding-top: 10px">
+      <label class="visually-hidden" for="status_project">Статус монтажера</label>
+      <div class="input-group">
+        <div class="input-group-text">Статус монтажера</div>
+        <select type="text" class="form-control" id="status_project" placeholder="Статус монтажера">
+          <option>dasda</option>
+          <option>asdas</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-4" style="padding-top: 10px">
+    <label class="visually-hidden" for="eMail">Монтажер</label>
+    <div class="input-group">
+      <div class="input-group-text">монтажер</div>
+      <input type="text" class="form-control" id="eMail" placeholder="eMail">
+    </div>
+  </div>   
+  <div class="col-4" style="padding-top: 10px">
+    <label class="visually-hidden" for="eMail">Дедлайн</label>
+    <div class="input-group">
+      <div class="input-group-text">Дедлайн</div>
+      <input type="date" class="form-control" id="eMail" placeholder="eMail">
+    </div>
+  </div>
+  <div class="col-4" style="padding-top: 10px">
+    <label class="visually-hidden" for="eMail">Дата съемки</label>
+    <div class="input-group">
+      <div class="input-group-text">Дата съемки</div>
+      <input type="date" class="form-control" id="eMail" placeholder="eMail">
+    </div>
+  </div>
+  <div class="col-4" style="padding-top: 10px">
+    <label class="visually-hidden" for="eMail">Дата завершения</label>
+    <div class="input-group">
+      <div class="input-group-text">Дата завершения</div>
+      <input type="date" class="form-control" id="eMail" placeholder="eMail">
+    </div>
+  </div>
+  <div class="col-4" style="padding-top: 10px">
+      <label class="visually-hidden" for="status_project">Статус оплаты</label>
+      <div class="input-group">
+        <div class="input-group-text">Статус оплаты</div>
+        <select type="text" class="form-control" id="status_project" placeholder="Статус монтажера">
+          <option>dasda</option>
+          <option>asdas</option>
+        </select>
+      </div>
+    </div> 
+    <div class="col-4" style="padding-top: 10px">
+    <label class="visually-hidden" for="eMail">Аренда</label>
+    <div class="input-group">
+      <div class="input-group-text">Аренда</div>
+      <input type="text" class="form-control" id="eMail" placeholder="eMail">
+    </div>
+  </div> 
+  <div class="col-4" style="padding-top: 10px">
+    <label class="visually-hidden" for="eMail">Ссылка на материалы</label>
+    <div class="input-group">
+      <div class="input-group-text">Ссылка на материалы</div>
+      <input type="text" class="form-control" id="eMail" placeholder="eMail">
+    </div>
+  </div>         
+  </div>
+  <button type="submit" form="change_event" class="btn btn-dark" style="margin-top: 10px">Сохранить</button>
+  </div>
+</form>
+{% endblock %}
